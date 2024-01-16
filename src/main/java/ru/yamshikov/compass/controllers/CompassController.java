@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.validation.SimpleErrors;
 import org.springframework.web.bind.annotation.*;
 import ru.yamshikov.compass.dto.*;
 import ru.yamshikov.compass.model.Compass;
@@ -58,14 +57,15 @@ public class CompassController {
         List<Double> doubleList = new ArrayList<>();
         for (String s : dto.getInterval().split("-")) {
             Double d = Double.valueOf(s);
-            if (d < 0 || d > 360) throw new SettingsDtoValidationException(List.of("interval - Значение должно быть от 0 до 360"));
+            if (d < 0 || d > 360)
+                throw new SettingsDtoValidationException(List.of("interval - Значение должно быть от 0 до 360"));
             doubleList.add(d);
         }
         return doubleList;
     }
 
-    private void dtoValidation(Errors errors){
-        if (errors.hasErrors()){
+    private void dtoValidation(Errors errors) {
+        if (errors.hasErrors()) {
             List<String> listErrors = errors.getFieldErrors()
                     .stream()
                     .map(field -> field.getField() + " - " + field.getDefaultMessage())
